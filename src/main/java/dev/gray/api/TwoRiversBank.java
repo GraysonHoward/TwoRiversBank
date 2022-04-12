@@ -19,6 +19,7 @@ public class TwoRiversBank {
     static User current = null;
 
     public static void main(String[] args) {
+        
         boolean flag = true;
         while(flag) {
             flag = homePage();
