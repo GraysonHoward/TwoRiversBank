@@ -57,17 +57,19 @@ public class TwoRiversBank {
         String password = scanner.nextLine();
         if(service.validateLogin(username, password)) {
             current = service.login(username);
-            return userPortal();
+            if(current == null){
+                return userPortal();
+            }
+
         }
         else if(attempts > 3){
             System.out.println("Exceeded Login Attempts!");
             return false;
-        }else{
-            String message = "Login Failed. Attempt: " + (attempts+1);
-            Logger.log((message + "Username: " + username), LogLevel.WARNING);
-            System.out.println(message);
-            return login(attempts+1);
         }
+        String message = "Login Failed. Attempt: " + (attempts+1);
+        Logger.log((message + "Username: " + username), LogLevel.WARNING);
+        System.out.println(message);
+        return login(attempts+1);
     }
 
     static boolean newUser() {

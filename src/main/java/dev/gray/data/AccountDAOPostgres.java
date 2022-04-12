@@ -52,13 +52,16 @@ public class AccountDAOPostgres implements AccountDAO{
 
             ResultSet rs = ps.executeQuery();
 
-            rs.next(); // move to first record
-            Account act = new Account();
-            act.setAccountNum(rs.getInt("account_num"));
-            act.setUserID(rs.getInt("owner"));
-            act.setBal(rs.getDouble("balance"));
-            act.setType(rs.getString("account_type"));
-            return act;
+            // move to first record
+            if(rs.next()) {
+                Account act = new Account();
+                act.setAccountNum(rs.getInt("account_num"));
+                act.setUserID(rs.getInt("owner"));
+                act.setBal(rs.getDouble("balance"));
+                act.setType(rs.getString("account_type"));
+                return act;
+            }
+            return null;
         } catch (SQLException e) {
             e.printStackTrace();
             Logger.log(e.getMessage(), LogLevel.ERROR);

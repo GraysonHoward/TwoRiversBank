@@ -23,14 +23,16 @@ public class UserDAOPostgres implements UserDAO{
             ps.execute();
 
             ResultSet rs =ps.getGeneratedKeys();
-            rs.next();
-            int userID = rs.getInt("user_id");
-            user.setUserID(userID);
+            if(rs.next()) {
+                int userID = rs.getInt("user_id");
+                user.setUserID(userID);
 
-            String message = "Creating User: " + user.getUserID();
-            Logger.log(message, LogLevel.INFO);
+                String message = "Creating User: " + user.getUserID();
+                Logger.log(message, LogLevel.INFO);
 
-            return user;
+                return user;
+            }
+            return null;
         } catch (SQLException e) {
             Logger.log(e.getMessage(), LogLevel.ERROR);
             e.printStackTrace();
@@ -48,15 +50,17 @@ public class UserDAOPostgres implements UserDAO{
             ps.setString(1,usrName);
 
             ResultSet rs = ps.executeQuery();
-
-            rs.next(); // move to first record
-            User user = new User();
-            user.setUserID(rs.getInt("user_id"));
-            user.setUsername(rs.getString("username"));
-            user.setFirstName(rs.getString("first_name"));
-            user.setLastName(rs.getString("last_name"));
-            user.setPassword(rs.getString("pass"));
-            return user;
+            // move to first record
+            if(rs.next()) {
+                User user = new User();
+                user.setUserID(rs.getInt("user_id"));
+                user.setUsername(rs.getString("username"));
+                user.setFirstName(rs.getString("first_name"));
+                user.setLastName(rs.getString("last_name"));
+                user.setPassword(rs.getString("pass"));
+                return user;
+            }
+            return null;
         } catch (SQLException e) {
             e.printStackTrace();
             Logger.log(e.getMessage(), LogLevel.ERROR);
@@ -75,14 +79,16 @@ public class UserDAOPostgres implements UserDAO{
 
             ResultSet rs = ps.executeQuery();
 
-            rs.next(); // move to first record
-            User user = new User();
-            user.setUserID(rs.getInt("user_id"));
-            user.setUsername(rs.getString("username"));
-            user.setFirstName(rs.getString("first_name"));
-            user.setLastName(rs.getString("last_name"));
-            user.setPassword(rs.getString("pass"));
-            return user;
+            if(rs.next()) {
+                User user = new User();
+                user.setUserID(rs.getInt("user_id"));
+                user.setUsername(rs.getString("username"));
+                user.setFirstName(rs.getString("first_name"));
+                user.setLastName(rs.getString("last_name"));
+                user.setPassword(rs.getString("pass"));
+                return user;
+            }
+            return null;
         } catch (SQLException e) {
             e.printStackTrace();
             Logger.log(e.getMessage(), LogLevel.ERROR);

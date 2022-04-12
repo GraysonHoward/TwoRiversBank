@@ -30,7 +30,9 @@ public class BankServiceImpl implements BankService {
     //Tests stored password against provided password
     public boolean validateLogin(String username, String password) {
         User user = userDAO.getUserByUsername(username);
-        return user.validatePass(password);
+        if(user != null)
+            return user.validatePass(password);
+        return false;
     }
 
     @Override
@@ -88,6 +90,8 @@ public class BankServiceImpl implements BankService {
     public Account transferTo(int sourceActNum, int destActNum, double amount) {
         Account actSource = accountDAO.getAccountByNumber(sourceActNum);
         Account actDest = accountDAO.getAccountByNumber(destActNum);
+        if(actDest==null||actSource==null)
+            return null;
         if(amount <= actSource.getBal()) {
             actSource.setBal(actSource.getBal() - amount);
             actDest.setBal(actDest.getBal() + amount);
