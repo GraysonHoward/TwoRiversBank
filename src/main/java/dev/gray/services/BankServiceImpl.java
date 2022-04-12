@@ -1,5 +1,8 @@
 package dev.gray.services;
-
+/* Author: Grayson Howard
+ * Modified: 04/11/2022
+ * Implements methods outlined in the interface.
+ */
 import dev.gray.data.AccountDAO;
 import dev.gray.data.UserDAO;
 import dev.gray.entities.Account;
@@ -7,10 +10,6 @@ import dev.gray.entities.User;
 import dev.gray.utility.ArrayList;
 import dev.gray.utility.LogLevel;
 import dev.gray.utility.Logger;
-/* Author: Grayson Howard
- * Modified: 04/11/2022
- * Implements methods outlined in the interface.
- */
 
 public class BankServiceImpl implements BankService {
 
@@ -54,6 +53,7 @@ public class BankServiceImpl implements BankService {
         return accountDAO.createAccount(account);
     }
 
+    //Ensures an account belongs to the user trying to access it
     public boolean validateOwner(User usr, int num){
         ArrayList<Account> accounts = userDAO.getAccountsByUserID(usr.getUserID());
         for(int i = 0; i < accounts.size(); i++){

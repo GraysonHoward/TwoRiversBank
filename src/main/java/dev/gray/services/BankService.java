@@ -18,7 +18,7 @@ public interface BankService {
     User login(String username);
 
     /*
-     * Actions available once user is logged in
+     * Actions available once user is logged-in
      **/
     // User may update their username
     User changeUsername(User user);
