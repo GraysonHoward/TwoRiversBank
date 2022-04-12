@@ -8,7 +8,7 @@ import dev.gray.utility.ArrayList;
 import dev.gray.utility.LogLevel;
 import dev.gray.utility.Logger;
 /* Author: Grayson Howard
- * Modified: 04/08/2022
+ * Modified: 04/11/2022
  * Implements methods outlined in the interface.
  */
 

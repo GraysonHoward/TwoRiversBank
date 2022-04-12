@@ -1,4 +1,10 @@
 package dev.gray.api;
+/* Author: Grayson Howard
+ * Modified: 04/12/2022
+ * This class manages user interactions and input
+ * Allows users to view and interact with their
+ * personal bank accounts
+ */
 
 import org.apache.commons.lang3.StringUtils;
 import dev.gray.data.AccountDAOPostgres;
@@ -19,7 +25,6 @@ public class TwoRiversBank {
     static User current = null;
 
     public static void main(String[] args) {
-        
         boolean flag = true;
         while(flag) {
             flag = homePage();
