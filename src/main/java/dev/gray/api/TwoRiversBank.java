@@ -141,7 +141,8 @@ public class TwoRiversBank {
         }
 
         // Now give options
-        System.out.println("Please Select an Option:\n1. Deposit\n2. Withdraw\n3. Transfer\n4. New Account\n5. Logout");
+        System.out.println("Please Select an Option:\n1. Deposit    2. Withdraw    3. Transfer    4. New Account\n" +
+                "5. Logout     6. Close Account");
         int choice = scanner.nextInt();
 
         switch (choice){
@@ -153,6 +154,7 @@ public class TwoRiversBank {
                 current = null;
                 return true;
             }
+            case 6: removeAccount(); break;
         }
         return userPortal();
     }
@@ -234,6 +236,23 @@ public class TwoRiversBank {
         System.out.println("Transferred: $" + amt);
     }
 
+    static void transfer(int actNum, double amt){
+        scanner.nextLine();
+        System.out.println("Please enter the destination account:");
+        int account2 = scanner.nextInt();
+        Account result = service.transferTo(actNum,account2,amt);
+        if(result == null){
+            System.out.println("Something went wrong!");
+            System.out.println("Try again?Y/N");
+            String ans = scanner.next();
+            if(ans.equals("Y")||ans.equals("y"))
+                removeAccount();
+        }
+        else
+            return;
+        System.out.println("Transferred: $" + amt);
+    }
+
     static void newAccount(){
         scanner.nextLine();
         System.out.println("What Type of account will this be?\n1. Checking\n2. Savings\n3. Other");
@@ -249,6 +268,46 @@ public class TwoRiversBank {
         if(service.createNewAccount(act) == null){
             System.out.println("Something went wrong!");
         }
-        System.out.println("Created new "+ type +" account.");
+        System.out.println("Created new " + type +" account.");
+    }
+
+    private static void removeAccount() {
+        System.out.println("Please enter the account you'd like to close: ");
+        int actNum = scanner.nextInt();
+        if(!service.validateOwner(current, actNum)){
+            System.out.println("Account number is invalid or not owned by you.");
+            System.out.println("Try again?Y/N");
+            String ans = scanner.next();
+            if(ans.equals("Y")||ans.equals("y"))
+                removeAccount();
+            else
+                return;
+        }
+        // Make sure they want to close the account
+        System.out.println("Are you sure you want to close this account: " + actNum + "? Y/N");
+        String ans = scanner.next();
+        if(ans.equals("N")||ans.equals("n"))
+            return;
+
+        //Make sure the account is empty
+        if(service.isEmpty(actNum)){
+            service.deleteAccount(actNum);
+        }else{
+            //Decide what to do with remaining funds
+            Account act = service.deposit(actNum,0);
+            double bal = act.getBal();
+            System.out.println("This account is not empty would you like either:\n1. Transfer\n2. Withdraw ");
+            int choice = scanner.nextInt();
+            if(choice == 1){
+                System.out.println("The remaining balance of the account will be transferred.");
+                transfer(actNum, bal);
+                service.deleteAccount(actNum);
+            }else{
+                System.out.println("The remaining balance of the account will be withdrawn.");
+                service.withdraw(actNum, bal);
+                System.out.println("Withdrew: $" + bal);
+                service.deleteAccount(actNum);
+            }
+        }
     }
 }

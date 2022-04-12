@@ -53,16 +53,6 @@ public class BankServiceImpl implements BankService {
         return accountDAO.createAccount(account);
     }
 
-    //Ensures an account belongs to the user trying to access it
-    public boolean validateOwner(User usr, int num){
-        ArrayList<Account> accounts = userDAO.getAccountsByUserID(usr.getUserID());
-        for(int i = 0; i < accounts.size(); i++){
-            if(accounts.get(i).getAccountNum() == num)
-                return true;
-        }
-        return false;
-    }
-
     @Override
     public ArrayList<Account> displayAccounts(User user) {
         return userDAO.getAccountsByUserID(user.getUserID());
@@ -97,8 +87,8 @@ public class BankServiceImpl implements BankService {
     @Override
     public Account transferTo(int sourceActNum, int destActNum, double amount) {
         Account actSource = accountDAO.getAccountByNumber(sourceActNum);
-        Account actDest = accountDAO.getAccountByNumber(sourceActNum);
-        if(amount < actSource.getBal()) {
+        Account actDest = accountDAO.getAccountByNumber(destActNum);
+        if(amount <= actSource.getBal()) {
             actSource.setBal(actSource.getBal() - amount);
             actDest.setBal(actDest.getBal() + amount);
             String message = "Transferring Funds. From Account: " + sourceActNum +
@@ -123,5 +113,20 @@ public class BankServiceImpl implements BankService {
     @Override
     public boolean deleteUser(User user) {
         return userDAO.deleteUserByID(user.getUserID());
+    }
+
+    //Ensures an account belongs to the user trying to access it
+    public boolean validateOwner(User usr, int num){
+        ArrayList<Account> accounts = userDAO.getAccountsByUserID(usr.getUserID());
+        for(int i = 0; i < accounts.size(); i++){
+            if(accounts.get(i).getAccountNum() == num)
+                return true;
+        }
+        return false;
+    }
+
+    public boolean isEmpty(int actNum){
+        Account act = accountDAO.getAccountByNumber(actNum);
+        return act.getBal() == 0;
     }
 }
