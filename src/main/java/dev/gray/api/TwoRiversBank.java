@@ -16,6 +16,7 @@ import dev.gray.utility.ArrayList;
 import dev.gray.utility.LogLevel;
 import dev.gray.utility.Logger;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
@@ -166,9 +167,22 @@ public class TwoRiversBank {
     static void deposit(){
         scanner.nextLine();
         System.out.print("Which Account are you depositing into?\nPlease type the number:");
-        int number = scanner.nextInt();
+        int number = 0;
+        try {
+            number = scanner.nextInt();
+        }catch (InputMismatchException e){
+            scanner.nextLine();
+            Logger.log(e.getMessage(), LogLevel.ERROR);
+            System.out.println("Account number invalid.");
+            System.out.println("Try again?Y/N");
+            String ans = scanner.next();
+            if(ans.equals("Y")||ans.equals("y"))
+                deposit();
+            else
+                return;
+        }
         if(!service.validateOwner(current, number)){
-            System.out.println("Account number is invalid or not owned by you.");
+            System.out.println("Account is not owned by you.");
             System.out.println("Try again?Y/N");
             String ans = scanner.next();
             if(ans.equals("Y")||ans.equals("y"))
@@ -185,7 +199,20 @@ public class TwoRiversBank {
     static void withdraw(){
         scanner.nextLine();
         System.out.print("Which Account are you withdrawing from?\nPlease type the number:");
-        int number = scanner.nextInt();
+        int number = 0;
+        try {
+            number = scanner.nextInt();
+        }catch (InputMismatchException e){
+            scanner.nextLine();
+            Logger.log(e.getMessage(), LogLevel.ERROR);
+            System.out.println("Account number invalid.");
+            System.out.println("Try again?Y/N");
+            String ans = scanner.next();
+            if(ans.equals("Y")||ans.equals("y"))
+                withdraw();
+            else
+                return;
+        }
         if(!service.validateOwner(current, number)){
             System.out.println("Account number is invalid or not owned by you.");
             System.out.println("Try again?Y/N");
@@ -212,9 +239,22 @@ public class TwoRiversBank {
     static void transfer(){
         scanner.nextLine();
         System.out.print("Which Account are you transferring from?\nPlease type the number:");
-        int account1 = scanner.nextInt();
+        int account1 = 0;
+        try {
+            account1 = scanner.nextInt();
+        }catch (InputMismatchException e){
+            scanner.nextLine();
+            Logger.log(e.getMessage(), LogLevel.ERROR);
+            System.out.println("Account number invalid.");
+            System.out.println("Try again?Y/N");
+            String ans = scanner.next();
+            if(ans.equals("Y")||ans.equals("y"))
+                transfer();
+            else
+                return;
+        }
         if(!service.validateOwner(current, account1)){
-            System.out.println("Account number is invalid or not owned by you.");
+            System.out.println("Account is not owned by you.");
             System.out.println("Try again?Y/N");
             String ans = scanner.next();
             if(ans.equals("Y")||ans.equals("y"))
@@ -223,7 +263,20 @@ public class TwoRiversBank {
                 return;
         }
         System.out.println("Please enter the destination account:");
-        int account2 = scanner.nextInt();
+        int account2 = 0;
+        try {
+            account2 = scanner.nextInt();
+        }catch (InputMismatchException e){
+            scanner.nextLine();
+            Logger.log(e.getMessage(), LogLevel.ERROR);
+            System.out.println("Account number invalid.");
+            System.out.println("Try again?Y/N");
+            String ans = scanner.next();
+            if(ans.equals("Y")||ans.equals("y"))
+                transfer();
+            else
+                return;
+        }
         System.out.println("Please enter the amount you would like transferred:");
         double amt = scanner.nextDouble();
         Account result = service.transferTo(account1,account2,amt);
@@ -242,7 +295,20 @@ public class TwoRiversBank {
     static void transfer(int actNum, double amt){
         scanner.nextLine();
         System.out.println("Please enter the destination account:");
-        int account2 = scanner.nextInt();
+        int account2 = 0;
+        try {
+            account2 = scanner.nextInt();
+        }catch (InputMismatchException e){
+            scanner.nextLine();
+            Logger.log(e.getMessage(), LogLevel.ERROR);
+            System.out.println("Account number invalid.");
+            System.out.println("Try again?Y/N");
+            String ans = scanner.next();
+            if(ans.equals("Y")||ans.equals("y"))
+                transfer(actNum, amt);
+            else
+                return;
+        }
         Account result = service.transferTo(actNum,account2,amt);
         if(result == null){
             System.out.println("Something went wrong!");
@@ -259,7 +325,20 @@ public class TwoRiversBank {
     static void newAccount(){
         scanner.nextLine();
         System.out.println("What Type of account will this be?\n1. Checking\n2. Savings\n3. Other");
-        int choice = scanner.nextInt();
+        int choice = 0;
+        try {
+            choice = scanner.nextInt();
+        }catch (InputMismatchException e){
+            scanner.nextLine();
+            Logger.log(e.getMessage(), LogLevel.ERROR);
+            System.out.println("Invalid input.");
+            System.out.println("Try again?Y/N");
+            String ans = scanner.next();
+            if(ans.equals("Y")||ans.equals("y"))
+                newAccount();
+            else
+                return;
+        }
         String type;
         switch (choice){
             case 1:type = "Checking";break;
