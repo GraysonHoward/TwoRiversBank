@@ -30,8 +30,9 @@ public class BankServiceImpl implements BankService {
     //Tests stored password against provided password
     public boolean validateLogin(String username, String password) {
         User user = userDAO.getUserByUsername(username);
-        if(user != null)
+        if(user != null) {
             return user.validatePass(password);
+        }
         return false;
     }
 
