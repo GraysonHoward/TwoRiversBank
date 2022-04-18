@@ -16,6 +16,6 @@ public interface AccountDAO {
     // Update functions
     Account updateAccount(Account account);
 
-    //Delete Account
+    // Delete Account
     boolean deleteAccountByNumber(int actNum);
 }
